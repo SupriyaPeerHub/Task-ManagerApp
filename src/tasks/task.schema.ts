@@ -1,0 +1,21 @@
+import { Prop, Schema } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
+import { TaskStatus } from 'src/interfaces/task-status.enum';
+
+@Schema()
+export class Task {
+  @Prop({ required: true })
+  title!: string;
+
+  @Prop()
+  description!: string;
+
+  @Prop({ default: TaskStatus.PENDING, enum: TaskStatus })
+  status!: TaskStatus;
+
+  @Prop()
+  dueDate!: Date;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  userId!: Types.ObjectId;
+}
