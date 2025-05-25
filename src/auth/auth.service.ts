@@ -21,7 +21,7 @@ export class AuthService {
       const user = new this.userModel({
         ...dto,
         password: hashedPassword,
-        type: UserRole.USER,
+        // type: UserRole.USER,
       });
       const RegistratedUser = await user.save();
       return { message: 'Registration successful', data: RegistratedUser };
@@ -42,11 +42,9 @@ export class AuthService {
       if (!isPasswordMatch) {
         return { message: 'Invalid credentials', data: null };
       }
-      // const payload = { userID: user._id, role: user.type };
       const payload = {
-        _id: user._id,
-        type: user.type,
-        email: user.email,
+        sub: user._id.toString(),
+        role: user.type,
       };
 
       const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' }); // Shorter lifetime
@@ -78,7 +76,13 @@ export class AuthService {
   async refreshTokens(refreshToken: string) {
     try {
       const decoded: any = this.jwtService.decode(refreshToken);
-      const userId = decoded?.userID;
+      const userId = decoded?._id;
+      console.log('decoded', decoded);
+      console.log('userId', userId);
+
+      if (!refreshToken) {
+        return { message: 'Refresh token missing', data: null };
+      }
 
       if (!userId) {
         return { message: 'Invalid token', data: null };
@@ -98,7 +102,11 @@ export class AuthService {
       }
 
       // Generate new tokens
-      const payload = { userID: user._id, role: user.type };
+      // const payload = { userID: user._id, role: user.type };
+      const payload = {
+        sub: user._id.toString(),
+        role: user.type,
+      };
       const newAccessToken = this.jwtService.sign(payload, {
         expiresIn: '15m',
       });
@@ -119,7 +127,7 @@ export class AuthService {
       };
     } catch (err) {
       console.log(err);
-      return { message: 'Internal server error', data: null }; 
+      return { message: 'Internal server error', data: null };
     }
   }
 }

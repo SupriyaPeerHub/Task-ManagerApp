@@ -1,9 +1,9 @@
 interface RequestWithUser extends Request {
-  user?: {
+  user: {
     userId: string;
-    email: string;
     role: string;
   };
 }
 
 export  {RequestWithUser};
+
