@@ -21,7 +21,7 @@ export class AuthService {
       const user = new this.userModel({
         ...dto,
         password: hashedPassword,
-        type: UserRole.ADMIN,
+        type: UserRole.USER,
       });
       const RegistratedUser = await user.save();
       return { message: 'Registration successful', data: RegistratedUser };
@@ -34,7 +34,7 @@ export class AuthService {
   async login(dto: LoginDto) {
     try {
       const user = await this.userModel.findOne({ email: dto.email });
-      console.log(user);
+      // console.log(user);
       if (!user) {
         return { message: 'User not found', data: null };
       }

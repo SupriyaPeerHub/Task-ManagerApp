@@ -1,4 +1,3 @@
-// username, email, password, type
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { UserRole } from 'src/interfaces/user-role.enum';
 import { Document } from 'mongoose';

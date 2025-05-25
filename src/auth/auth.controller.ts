@@ -9,13 +9,13 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
-    console.log("RegisterDto", RegisterDto);
+    // console.log("RegisterDto", RegisterDto);
     return this.authService.register(RegisterDto);
   }
 
   @Post('login')
   async login(@Body() LoginDto: LoginDto) {
-    console.log("LoginDto", LoginDto); 
+    // console.log("LoginDto", LoginDto); 
     return this.authService.login(LoginDto);
   }
 }
